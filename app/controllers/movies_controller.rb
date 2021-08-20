@@ -2,6 +2,15 @@
 class MoviesController < ApplicationController
   def index
     @movies = Movie.order(params[:sort])
+    @all_ratings = Movie.all_ratings
+
+    if not params[:ratings].nil?
+      @rating_type = params[:ratings].select {|k,v| v.eql? "1" }.keys
+      @movies = Movie.where(:rating => @rating_type).order(params[:sort])
+    else
+      @rating_type = @all_ratings
+    end 
+
   end
 
   def show
